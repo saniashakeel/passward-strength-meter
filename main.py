@@ -1,66 +1,75 @@
 import re
 import streamlit as st
 
-#PAGE STYLING
-st.set_page_config(page_titles="Passward Strength Meter by Sania Shakeel",page_icon=🔐,layout="centered")
+# PAGE STYLING
+st.set_page_config(page_title="Password Strength Meter by Sania Shakeel", page_icon="🔐", layout="centered")
 
-#CUSTOM CSS
+# CUSTOM CSS
 st.markdown("""
 <style>
-.main{text-align: center }
-.stTextInput{width: 60% !important; margin: auto;}
-.stButton button {width :50%; background-color # 4CAF50; color: white; font-size: 18px;}
-.stButton button:hover {background-color: #45a049;}
+.main { text-align: center; }
+.stTextInput { width: 60% !important; margin: auto; }
+.stButton button { width: 50%; background-color: #4CAF50; color: white; font-size: 18px; }
+.stButton button:hover { background-color: #45a049; }
 </style>
-""",unsafe_allow-html=True)
+""", unsafe_allow_html=True)
 
-#PAGE TITLE AND DESCRIPTION
-st.tittle("🔒Passward Strength Generator")
-st.write("Enter your passward below to check its security level.🔎")
+# PAGE TITLE AND DESCRIPTION
+st.title("🔒 Password Strength Generator")
+st.write("Enter your password below to check its security level. 🔎")
 
-#FUNCTION TO CHECK PASSWARD STRENGTH
-
-def check_passward_strength(passward):
+# FUNCTION TO CHECK PASSWORD STRENGTH
+def check_password_strength(password):
     score = 0
     feedback = []
 
-    if len(passward) >= 8
-         score += 1 #INCREASED SCORE BY 1
-     else:
-        feedback.append("❌Passward should be "atleast 8 characters long."")
-    if re.search(r"[A-Z]",passward )and re.search(r"[a-z]",passward):
-        score+= 1
+    # Length Check
+    if len(password) >= 8:
+        score += 1  # Increased score by 1
     else:
-        feedback.append("❌Passward should include ** both uppercase(A-Z) and lowercase(a-z) letters**.") 
+        feedback.append("❌ Password should be at least **8 characters long**.")
 
-    if re.search(r"\d", passward):
-        score +=1
-    else:feedback.append("❌Passward should include **atleast one number(1-9)** .")
+    # Uppercase and Lowercase Check
+    if re.search(r"[A-Z]", password) and re.search(r"[a-z]", password):
+        score += 1
+    else:
+        feedback.append("❌ Password should include **both uppercase (A-Z) and lowercase (a-z) letters**.") 
 
-#SPECIAL CHARACTER
-if re.search(r"[!@#$%^&*/*]",passward):
-    score += 1
-else:
-    feedback.append("❌Passward should include **atleast one special character(!@#$%^&*/*)**.")    
+    # Digit Check
+    if re.search(r"\d", password):
+        score += 1
+    else:
+        feedback.append("❌ Password should include **at least one number (0-9)**.")
 
-#DISPLAY PASSWARD STRENGTH RESULTS
- if score ==4:
-    st.success("✅**Strong Passward** - Your passward is secure")
- elif score ==3:
-    st.info("⚠️ **Moderate Passward** - Consider improving security by adding more features")   
-else:
-    st.error("❌**Week Passward**- Follow the suggestion below to strength it.")
+    # Special Character Check
+    if re.search(r"[!@#$%^&*/]", password):
+        score += 1
+    else:
+        feedback.append("❌ Password should include **at least one special character (!@#$%^&*/) **.")    
 
-#FEEDBACK
-if feedback:
-    with st.expander("🔍**Improve Your Passward"):
-        for item in feedback:
-            st.write(item)
-            passward= st.text_input("Enter Your Passward:",type="passward",help="ensure your passward is strong .🔐") 
+    # Display Password Strength Results
+    if score == 4:
+        st.success("✅ **Strong Password** - Your password is secure!")
+    elif score == 3:
+        st.info("⚠️ **Moderate Password** - Consider improving security by adding more features.")
+    else:
+        st.error("❌ **Weak Password** - Follow the suggestions below to strengthen it.")
 
-#BUTTON WORKING               
+    # Show Feedback
+    if feedback:
+        with st.expander("🔍 **Improve Your Password**"):
+            for item in feedback:
+                st.write(item)
+
+# PASSWORD INPUT FIELD
+password = st.text_input("Enter Your Password:", type="password", help="Ensure your password is strong. 🔐") 
+
+# BUTTON HANDLING
 if st.button("Check Strength"):
-    if passward :
-        check_passward_strength(passward)
+    if password:
+        check_password_strength(password)
     else:
-        st.warning("⚠️Please enter a passward first!")
+        st.warning("⚠️ Please enter a password first!")
+
+# FOOTER: 
+st.markdown('<p class="footer">🔹 Created by <b>Sania Shakeel</b> 🔹</p>', unsafe_allow_html=True)
